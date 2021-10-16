@@ -1,0 +1,14 @@
+{
+  "name": "d2-element-frame-tables",
+  "version": "1.0.0",
+  "description": "Show tables of all the elemental type and weapon frame combinations available in Destiny 2.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  }
+}
