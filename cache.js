@@ -6,18 +6,18 @@ import { fileURLToPath } from "url";
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
 const md5 = (data) => {
-  return crypto.createHash("md5").update(data).digest();
+  return crypto.createHash("md5").update(data).digest("hex");
 };
 
 const cacheFilePath = (key) => {
   return path.join(currentDir, ".cache", `${md5(key)}.json`);
 };
 
-const cacheObject = async (key, data) => {
+const cacheObject = (key, data) => {
   return fs.writeFile(cacheFilePath(key), JSON.stringify(data));
 };
 
-const readFromCache = async (key) => {
+const readFromCache = (key) => {
   return fs
     .readFile(cacheFilePath(key), "utf-8")
     .then((contents) => JSON.parse(contents));
