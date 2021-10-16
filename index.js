@@ -2,8 +2,7 @@ require("dotenv").config();
 const fetch = require("./fetch");
 
 const commonHeaders = {
-  "User-Agent":
-    "Element Frame Tables/1.0 AppId/42590 (+#;noelle_leigh@fastmail.com)",
+  "User-Agent": process.env.USER_AGENT,
   "X-API-Key": process.env.API_KEY,
 };
 
