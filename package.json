@@ -1,7 +1,7 @@
 {
   "name": "d2-element-frame-tables",
   "version": "1.0.0",
-  "description": "Show tables of all the elemental type and weapon frame combinations available in Destiny 2.",
+  "description": "Generate tables of all the elemental damage type and weapon frame combinations available in Destiny 2.",
   "main": "index.js",
   "type": "module",
   "scripts": {
