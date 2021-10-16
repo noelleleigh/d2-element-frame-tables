@@ -31,6 +31,18 @@ const filterItemByTier = (tier) => {
   return (item) => item.inventory.tierTypeHash === tier;
 };
 
+const remapPerkName = (name) => {
+  const map = new Map();
+  map.set("Häkke Precision Frame", "Precision Frame");
+  map.set("VEIST Rapid-Fire", "Rapid-Fire Frame");
+  map.set("Omolon Adaptive Frame", "Adaptive Frame");
+  if (map.has(name)) {
+    return map.get(name);
+  } else {
+    return name;
+  }
+};
+
 const getWeapons = async () => {
   const manifest = await api.getManifest("en");
   const DestinyDamageTypeDefinition = await api.getApi(
@@ -45,12 +57,23 @@ const getWeapons = async () => {
   const DestinyItemCategoryDefinition = await api.getApi(
     manifest.DestinyItemCategoryDefinition
   );
+  const DestinyPowerCapDefinition = await api.getApi(
+    manifest.DestinyPowerCapDefinition
+  );
   const DestinyInventoryItemDefinition = await api.getApi(
     manifest.DestinyInventoryItemDefinition
   );
   const weapons = Object.values(DestinyInventoryItemDefinition)
     .filter(filterItemByCategory(categoryWeapon))
-    .filter(filterItemByTier(4008398120)); // Legendary
+    .filter(filterItemByTier(4008398120)) // Legendary
+    // Exclude sunset weapons
+    .filter((weapon) => {
+      return (
+        DestinyPowerCapDefinition[
+          weapon.quality?.versions[weapon.quality.currentVersion].powerCapHash
+        ]?.powerCap > 9999
+      );
+    });
   const weaponInfo = weapons
     .map((item) => {
       return {
@@ -64,21 +87,23 @@ const getWeapons = async () => {
         damageType:
           DestinyDamageTypeDefinition[item.damageTypeHashes?.[0]]
             ?.displayProperties.name,
-        intrinsicPerk: item.sockets.socketEntries
-          .filter((entry) => {
-            const socketType =
-              DestinySocketTypeDefinition[entry.socketTypeHash];
-            const socketCategory =
-              DestinySocketCategoryDefinition[socketType?.socketCategoryHash];
-            return (
-              socketCategory?.displayProperties.name === "INTRINSIC TRAITS"
-            );
-          })
-          .map(
-            (entry) =>
-              DestinyInventoryItemDefinition[entry.singleInitialItemHash]
-                .displayProperties.name
-          )[0],
+        intrinsicPerk: remapPerkName(
+          item.sockets.socketEntries
+            .filter((entry) => {
+              const socketType =
+                DestinySocketTypeDefinition[entry.socketTypeHash];
+              const socketCategory =
+                DestinySocketCategoryDefinition[socketType?.socketCategoryHash];
+              return (
+                socketCategory?.displayProperties.name === "INTRINSIC TRAITS"
+              );
+            })
+            .map(
+              (entry) =>
+                DestinyInventoryItemDefinition[entry.singleInitialItemHash]
+                  .displayProperties.name
+            )[0]
+        ),
       };
     })
     .filter((item) => item.damageType !== undefined);
@@ -131,7 +156,7 @@ const main = async () => {
       <table>
         <caption>${weaponType}</caption>
         <tr>
-          <td>Frame</td>
+          <th scope="col">Frame</th>
           ${damageTypes
             .map((type) => `<th scope="col">${type}</th>`)
             .join("\n")}
