@@ -1,4 +1,4 @@
-const https = require("https");
+import * as https from "https";
 
 class Response {
   constructor(body, init) {
@@ -19,7 +19,7 @@ class Response {
  * @param {*} options
  * @returns
  */
-module.exports = (url, options) => {
+export default (url, options) => {
   return new Promise((resolve, reject) => {
     const request = https.request(url, options);
     // console.log(`Fetching ${url} ...`);
