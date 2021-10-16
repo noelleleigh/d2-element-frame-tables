@@ -2,7 +2,7 @@ import * as api from "./api.js";
 
 const categoryWeapon = 1;
 
-const weaponTypes = [
+const weaponTypeHashes = [
   5, // Auto Rifle
   6, // Hand Cannon
   7, // Pulse Rifle
@@ -31,7 +31,7 @@ const filterItemByTier = (tier) => {
   return (item) => item.inventory.tierTypeHash === tier;
 };
 
-const main = async () => {
+const getWeapons = async () => {
   const manifest = await api.getManifest("en");
   const DestinyDamageTypeDefinition = await api.getApi(
     manifest.DestinyDamageTypeDefinition
@@ -58,7 +58,7 @@ const main = async () => {
         weaponType:
           DestinyItemCategoryDefinition[
             item.itemCategoryHashes.filter((hash) =>
-              weaponTypes.includes(hash)
+              weaponTypeHashes.includes(hash)
             )[0]
           ].displayProperties.name,
         damageType:
@@ -82,7 +82,122 @@ const main = async () => {
       };
     })
     .filter((item) => item.damageType !== undefined);
-  console.table(weaponInfo);
+  return weaponInfo;
 };
 
-main();
+const main = async () => {
+  const weapons = await getWeapons();
+  const weaponTypes = Array.from(
+    new Set(weapons.map((weapon) => weapon.weaponType))
+  );
+  weaponTypes.sort();
+  const tables = [];
+  for (const weaponType of weaponTypes) {
+    const weaponsOfType = weapons.filter(
+      (weapon) => weapon.weaponType === weaponType
+    );
+    const intrinsics = Array.from(
+      new Set(weaponsOfType.map((weapon) => weapon.intrinsicPerk))
+    );
+    intrinsics.sort();
+    const damageTypes = Array.from(
+      new Set(weaponsOfType.map((weapon) => weapon.damageType))
+    );
+    damageTypes.sort();
+
+    const rows = [];
+
+    for (const intrinsic of intrinsics) {
+      const row = new Map();
+      row.set("frame", intrinsic);
+      for (const damageType of damageTypes) {
+        const matchingWeapons = weaponsOfType.filter((weapon) => {
+          return (
+            (weapon.intrinsicPerk === intrinsic) &
+            (weapon.damageType === damageType)
+          );
+        });
+        const matchingWeaponNames = Array.from(
+          new Set(matchingWeapons.map((weapon) => weapon.name))
+        );
+        matchingWeaponNames.sort();
+        row.set(damageType, matchingWeaponNames);
+      }
+      rows.push(row);
+    }
+
+    // Make HTML
+    const html = `
+      <table>
+        <caption>${weaponType}</caption>
+        <tr>
+          <td>Frame</td>
+          ${damageTypes
+            .map((type) => `<th scope="col">${type}</th>`)
+            .join("\n")}
+        </tr>
+        ${rows
+          .map(
+            (row) => `
+              <tr>
+                ${Array.from(row.values())
+                  .map((weapons, index) => {
+                    const val =
+                      index === 0
+                        ? weapons
+                        : `
+                          <ul>
+                            ${weapons
+                              .map((weapon) => `<li>${weapon}</li>`)
+                              .join("\n")}
+                          </ul>
+                        `;
+                    return index === 0
+                      ? `<th scope="row">${val}</th>`
+                      : `<td>${val}</td>`;
+                  })
+                  .join("\n")}
+              </tr>
+            `
+          )
+          .join("\n")}
+      </table>
+    `;
+    tables.push(html);
+  }
+
+  const fullPage = `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Destiny 2 Damage Types vs. Weapon Frames</title>
+      <style>
+        table,
+        td,
+        th {
+          border: 1px solid black;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 3em;
+        }
+
+        caption {
+          font-size: 3em;
+        }
+      </style>
+  </head>
+  <body>
+      ${tables.join("\n")}
+  </body>
+  </html>
+  `;
+  console.log(fullPage);
+};
+
+main().catch(console.error);
