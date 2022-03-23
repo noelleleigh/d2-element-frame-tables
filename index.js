@@ -18,6 +18,7 @@ const weaponTypeHashes = [
   1504945536, // Linear Fusion Rifles
   2489664120, // Trace Rifles
   3317538576, // Bows
+  3871742104, // Glaives
   3954685534, // Submachine Guns
 ];
 
