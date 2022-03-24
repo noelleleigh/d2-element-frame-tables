@@ -32,6 +32,35 @@ const filterItemByTier = (tier) => {
   return (item) => item.inventory.tierTypeHash === tier;
 };
 
+const pickWeaponTypeHash = (item) => {
+  const potentialWeaponTypeHashes = item.itemCategoryHashes.filter((hash) =>
+    weaponTypeHashes.includes(hash)
+  );
+  let weaponTypeHash;
+
+  // Trivial case
+  if (potentialWeaponTypeHashes.length === 1) {
+    weaponTypeHash = potentialWeaponTypeHashes[0];
+  }
+
+  // Special logic for weapons with more than one type
+  if (potentialWeaponTypeHashes.length > 1) {
+    // Check for Linear Fusion Rifle
+    if (
+      potentialWeaponTypeHashes.includes(9) &&
+      potentialWeaponTypeHashes.includes(1504945536)
+    ) {
+      weaponTypeHash = 1504945536;
+    } else {
+      throw new Error(
+        `Unknown weapon type hash group for "${item.displayProperties.name}": [${potentialWeaponTypeHashes}]`
+      );
+    }
+  }
+
+  return weaponTypeHash;
+};
+
 const remapPerkName = (name) => {
   const map = new Map();
   map.set("Häkke Precision Frame", "Precision Frame");
@@ -80,11 +109,8 @@ const getWeapons = async () => {
       return {
         name: item.displayProperties.name,
         weaponType:
-          DestinyItemCategoryDefinition[
-            item.itemCategoryHashes.filter((hash) =>
-              weaponTypeHashes.includes(hash)
-            )[0]
-          ].displayProperties.name,
+          DestinyItemCategoryDefinition[pickWeaponTypeHash(item)]
+            .displayProperties.name,
         damageType:
           DestinyDamageTypeDefinition[item.damageTypeHashes?.[0]]
             ?.displayProperties.name,
