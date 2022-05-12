@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import * as api from "./api.js";
 
 const categoryWeapon = 1;
@@ -249,7 +250,7 @@ const main = async () => {
   </body>
   </html>
   `;
-  console.log(fullPage);
+  await fs.writeFile("./index.html", fullPage);
 };
 
 main().catch(console.error);
