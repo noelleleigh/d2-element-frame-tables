@@ -179,10 +179,11 @@ const main = async () => {
       rows.push(row);
     }
 
+    const captionId = weaponType.replace(/\s/g, "-");
     // Make HTML
     const html = `
       <table>
-        <caption>${weaponType}</caption>
+        <caption id="${captionId}"><a href="#${captionId}">${weaponType}</a></caption>
         <tr>
           <th scope="col">Frame</th>
           ${damageTypes
