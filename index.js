@@ -228,10 +228,20 @@ const main = async () => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Destiny 2 Damage Types vs. Weapon Frames</title>
       <style>
+        :root {
+          color-scheme: light dark;
+        }
+
+        body {
+          font-size: 18px;
+          max-width: 1400px;
+          margin: auto;
+        }
+
         table,
         td,
         th {
-          border: 1px solid black;
+          border: 1px solid CanvasText;
         }
 
         table {
