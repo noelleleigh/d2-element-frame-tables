@@ -237,6 +237,7 @@ const main = async () => {
           font-size: 18px;
           max-width: 1400px;
           margin: auto;
+          background: Canvas;
         }
 
         h1 {
