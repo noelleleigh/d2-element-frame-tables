@@ -239,6 +239,13 @@ const main = async () => {
           margin: auto;
         }
 
+        h1 {
+          margin: auto;
+          text-align: center;
+          font-size: 4em;
+          margin-bottom: 3rem;
+        }
+
         table,
         td,
         th {
@@ -257,6 +264,7 @@ const main = async () => {
       </style>
   </head>
   <body>
+      <h1>Non-Sunset Legendary Weapons</h1>
       ${tables.join("\n")}
   </body>
   </html>
