@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js > index.html",
+    "start": "node ./index.js",
     "format": "prettier --write ."
   },
   "author": "",
