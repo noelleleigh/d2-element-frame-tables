@@ -1,6 +1,6 @@
 // Implementation details for interacting with the Bungie.net API
 
-import assert from 'node:assert/strict';
+import assert from "node:assert/strict";
 import dotEnv from "dotenv";
 import * as cache from "./cache.js";
 import fetch from "./fetch.js";
@@ -12,7 +12,10 @@ const commonHeaders = {
 };
 
 const authorizedFetch = (url) => {
-  assert(commonHeaders["X-API-Key"] !== undefined, "Missing X-API-Key HTTP header!")
+  assert(
+    commonHeaders["X-API-Key"] !== undefined,
+    "Missing X-API-Key HTTP header!"
+  );
   return fetch(url, { headers: commonHeaders });
 };
 
