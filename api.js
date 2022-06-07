@@ -3,7 +3,6 @@
 import assert from "node:assert/strict";
 import dotEnv from "dotenv";
 import * as cache from "./cache.js";
-import fetch from "./fetch.js";
 dotEnv.config();
 
 const commonHeaders = {

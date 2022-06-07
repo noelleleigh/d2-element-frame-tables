@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js",
+    "start": "node --experimental-fetch ./index.js",
     "format": "prettier --write ."
   },
   "author": "",
@@ -15,5 +15,8 @@
   },
   "devDependencies": {
     "prettier": "2.4.1"
+  },
+  "engines": {
+    "node": "^16.15.0"
   }
 }
