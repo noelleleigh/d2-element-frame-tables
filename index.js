@@ -62,11 +62,21 @@ const pickWeaponTypeHash = (item) => {
   return weaponTypeHash;
 };
 
+/**
+ * Some weapon frames/archetypes are special modifications of existing ones.
+ * To keep the tables compact, some of them are renamed to match their more
+ * generic version.
+ * @param {String} name
+ * @returns {String}
+ */
 const remapPerkName = (name) => {
   const map = new Map();
   map.set("Häkke Precision Frame", "Precision Frame");
+  map.set("MIDA Synergy", "Precision Frame"); // MIDA Mini-Tool
+  map.set("Omolon Adaptive Frame", "Lightweight Frame");
+  map.set("Shot Package", "Aggressive Frame"); // Felwinter's Lie
+  map.set("Together Forever", "Adaptive Frame"); // Drang
   map.set("VEIST Rapid-Fire", "Rapid-Fire Frame");
-  map.set("Omolon Adaptive Frame", "Adaptive Frame");
   if (map.has(name)) {
     return map.get(name);
   } else {
