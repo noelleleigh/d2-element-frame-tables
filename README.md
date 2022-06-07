@@ -6,3 +6,8 @@ Generate tables of all the elemental damage type and weapon frame combinations a
 1. `npm install`
 1. `node index.js`
 1. Open `index.html` in browser
+
+## Reference
+
+- [Bungie.Net API Documentation](https://bungie-net.github.io/multi/index.html)
+- [Destiny Data Explorer](https://data.destinysets.com/)
