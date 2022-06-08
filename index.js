@@ -167,7 +167,7 @@ const main = async () => {
     const intrinsics = Array.from(
       new Set(weaponsOfType.map((weapon) => weapon.intrinsicPerk))
     );
-    intrinsics.sort();
+    intrinsics.sort((a, b) => a.localeCompare(b));
     const damageTypes = Array.from(
       new Set(weaponsOfType.map((weapon) => weapon.damageType))
     );
@@ -228,11 +228,13 @@ const main = async () => {
                                     )}">
                                       <img class="icon-watermark" src="${
                                         weapon.iconWatermark
-                                      }">
+                                      }" width="96" height="96" loading="lazy">
                                       <img src="${weapon.icon}" alt="${
                                     weapon.name
-                                  }" title="${weapon.name}">
-                                    <span>${weapon.name}</span>
+                                  }" title="${
+                                    weapon.name
+                                  }"  width="96" height="96" loading="lazy">
+                                      <span>${weapon.name}</span>
                                     </a>
                                   </li>
                                   `
@@ -288,6 +290,7 @@ const main = async () => {
 
         td {
           vertical-align: top;
+          padding: 1em;
         }
 
         table {
@@ -302,6 +305,7 @@ const main = async () => {
 
         ul {
           list-style: none;
+          margin: 0;
           padding: 0;
           display: grid;
           grid-template-columns: repeat(3, 96px);
