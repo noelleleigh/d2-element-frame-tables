@@ -23,6 +23,8 @@ const weaponTypeHashes = [
   3954685534, // Submachine Guns
 ];
 
+const damageTypeOrder = ["Kinetic", "Arc", "Solar", "Void", "Stasis"];
+
 const filterItemByCategory = (categoryHash) => {
   return (item) => {
     return item.itemCategoryHashes?.includes(categoryHash);
@@ -169,7 +171,9 @@ const main = async () => {
     const damageTypes = Array.from(
       new Set(weaponsOfType.map((weapon) => weapon.damageType))
     );
-    damageTypes.sort();
+    damageTypes.sort(
+      (a, b) => damageTypeOrder.indexOf(a) - damageTypeOrder.indexOf(b)
+    );
 
     const rows = [];
 
