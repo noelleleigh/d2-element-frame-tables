@@ -119,6 +119,8 @@ const getWeapons = async () => {
     .map((item) => {
       return {
         name: item.displayProperties.name,
+        icon: new URL(item.displayProperties.icon, api.URL_BASE),
+        hash: item.hash,
         weaponType:
           DestinyItemCategoryDefinition[pickWeaponTypeHash(item)]
             .displayProperties.name,
@@ -180,11 +182,8 @@ const main = async () => {
             (weapon.damageType === damageType)
           );
         });
-        const matchingWeaponNames = Array.from(
-          new Set(matchingWeapons.map((weapon) => weapon.name))
-        );
-        matchingWeaponNames.sort();
-        row.set(damageType, matchingWeaponNames);
+        matchingWeapons.sort((a, b) => a.name.localeCompare(b.name));
+        row.set(damageType, matchingWeapons);
       }
       rows.push(row);
     }
@@ -208,11 +207,28 @@ const main = async () => {
                   .map((weapons, index) => {
                     const val =
                       index === 0
-                        ? weapons
-                        : `
+                        ? // The first item in this array is the intrinsic perk
+                          weapons
+                        : // Otherwise it's an array of weapons
+                          `
                           <ul>
                             ${weapons
-                              .map((weapon) => `<li>${weapon}</li>`)
+                              .map(
+                                (weapon) =>
+                                  `
+                                  <li>
+                                    <a href="${new URL(
+                                      `/w/${weapon.hash}`,
+                                      "https://d2gunsmith.com"
+                                    )}">
+                                      <img src="${weapon.icon}" alt="${
+                                    weapon.name
+                                  }" title="${weapon.name}">
+                                    </a>
+                                    <p>${weapon.name}</p>
+                                  </li>
+                                  `
+                              )
                               .join("\n")}
                           </ul>
                         `;
@@ -244,10 +260,11 @@ const main = async () => {
         }
 
         body {
-          font-size: 18px;
           max-width: 1400px;
           margin: auto;
           background: Canvas;
+          font-size: 18px;
+          font-family: sans-serif;
         }
 
         h1 {
@@ -271,6 +288,16 @@ const main = async () => {
 
         caption {
           font-size: 3em;
+        }
+
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          list-style: none;
+        }
+
+        li {
+          width: 96px;
         }
       </style>
   </head>
