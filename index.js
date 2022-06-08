@@ -122,7 +122,12 @@ const getWeapons = async () => {
       return {
         name: item.displayProperties.name,
         icon: new URL(item.displayProperties.icon, api.URL_BASE),
-        iconWatermark: new URL(item.iconWatermark, api.URL_BASE),
+        iconWatermark: new URL(
+          item.quality.displayVersionWatermarkIcons[
+            item.quality.displayVersionWatermarkIcons.length - 1
+          ],
+          api.URL_BASE
+        ),
         hash: item.hash,
         weaponType:
           DestinyItemCategoryDefinition[pickWeaponTypeHash(item)]
