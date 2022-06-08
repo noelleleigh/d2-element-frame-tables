@@ -228,7 +228,7 @@ const main = async () => {
                                     )}">
                                       <img class="icon-watermark" src="${
                                         weapon.iconWatermark
-                                      }" width="96" height="96" loading="lazy">
+                                      }" width="96" height="96" loading="lazy" role="presentation">
                                       <img src="${weapon.icon}" alt="${
                                     weapon.name
                                   }" title="${
