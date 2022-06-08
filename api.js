@@ -5,6 +5,8 @@ import dotEnv from "dotenv";
 import * as cache from "./cache.js";
 dotEnv.config();
 
+const URL_BASE = "https://www.bungie.net";
+
 const commonHeaders = {
   "User-Agent": process.env.USER_AGENT,
   "X-API-Key": process.env.API_KEY,
@@ -19,7 +21,7 @@ const authorizedFetch = (url) => {
 };
 
 const getApi = async (path) => {
-  const url = new URL(path, "https://www.bungie.net");
+  const url = new URL(path, URL_BASE);
   let data;
   try {
     data = await cache.readFromCache(url.toString());
@@ -35,4 +37,4 @@ const getManifest = async (lang) => {
   return manifest.Response.jsonWorldComponentContentPaths[lang];
 };
 
-export { getApi, getManifest };
+export { getApi, getManifest, URL_BASE };
