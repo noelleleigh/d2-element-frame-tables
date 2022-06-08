@@ -264,8 +264,6 @@ const main = async () => {
         }
 
         body {
-          max-width: 1400px;
-          margin: auto;
           background: Canvas;
           font-size: 18px;
           font-family: sans-serif;
@@ -284,6 +282,10 @@ const main = async () => {
           border: 1px solid CanvasText;
         }
 
+        td {
+          vertical-align: top;
+        }
+
         table {
           width: 100%;
           border-collapse: collapse;
@@ -295,9 +297,11 @@ const main = async () => {
         }
 
         ul {
-          display: flex;
-          flex-wrap: wrap;
           list-style: none;
+          padding: 0;
+          display: grid;
+          grid-template-columns: repeat(3, 96px);
+          gap: 1em;
         }
 
         li {
