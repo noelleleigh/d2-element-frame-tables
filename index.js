@@ -120,6 +120,7 @@ const getWeapons = async () => {
       return {
         name: item.displayProperties.name,
         icon: new URL(item.displayProperties.icon, api.URL_BASE),
+        iconWatermark: new URL(item.iconWatermark, api.URL_BASE),
         hash: item.hash,
         weaponType:
           DestinyItemCategoryDefinition[pickWeaponTypeHash(item)]
@@ -221,11 +222,14 @@ const main = async () => {
                                       `/w/${weapon.hash}`,
                                       "https://d2gunsmith.com"
                                     )}">
+                                      <img class="icon-watermark" src="${
+                                        weapon.iconWatermark
+                                      }">
                                       <img src="${weapon.icon}" alt="${
                                     weapon.name
                                   }" title="${weapon.name}">
+                                    <span>${weapon.name}</span>
                                     </a>
-                                    <p>${weapon.name}</p>
                                   </li>
                                   `
                               )
@@ -298,6 +302,10 @@ const main = async () => {
 
         li {
           width: 96px;
+        }
+
+        .icon-watermark {
+          position: absolute;
         }
       </style>
   </head>
