@@ -165,6 +165,7 @@ const main = async () => {
   );
   weaponTypes.sort();
   const tables = [];
+  const iconSize = 48;
   for (const weaponType of weaponTypes) {
     const weaponsOfType = weapons.filter(
       (weapon) => weapon.weaponType === weaponType
@@ -223,27 +224,38 @@ const main = async () => {
                           `
                           <ul>
                             ${weapons
-                              .map(
-                                (weapon) =>
-                                  `
+                              .map((weapon) => {
+                                const name = weapon.name;
+                                const watermark = weapon.iconWatermark;
+                                const icon = weapon.icon;
+                                const gunsmithURL = new URL(
+                                  `/w/${weapon.hash}`,
+                                  "https://d2gunsmith.com"
+                                );
+                                return `
                                   <li>
-                                    <a href="${new URL(
-                                      `/w/${weapon.hash}`,
-                                      "https://d2gunsmith.com"
-                                    )}">
-                                      <img class="icon-watermark" src="${
-                                        weapon.iconWatermark
-                                      }" width="96" height="96" loading="lazy" role="presentation">
-                                      <img src="${weapon.icon}" alt="${
-                                    weapon.name
-                                  }" title="${
-                                    weapon.name
-                                  }"  width="96" height="96" loading="lazy">
-                                      <span>${weapon.name}</span>
+                                    <a href="${gunsmithURL}" title="${name}">
+                                      <div class="icon">
+                                        <img
+                                          class="icon-watermark"
+                                          src="${watermark}"
+                                          width="${iconSize}"
+                                          height="${iconSize}"
+                                          loading="lazy"
+                                          role="presentation"
+                                        >
+                                        <img
+                                          src="${icon}"
+                                          alt="${name}"
+                                          width="${iconSize}"
+                                          height="${iconSize}"
+                                          loading="lazy"
+                                        >
+                                      </div>
                                     </a>
                                   </li>
-                                  `
-                              )
+                                `;
+                              })
                               .join("\n")}
                           </ul>
                         `;
@@ -271,7 +283,7 @@ const main = async () => {
       <title>Destiny 2 Damage Types vs. Weapon Frames</title>
       <style>
         :root {
-          color-scheme: light dark;
+          color-scheme: dark;
         }
 
         body {
@@ -287,15 +299,8 @@ const main = async () => {
           margin-bottom: 3rem;
         }
 
-        table,
-        td,
-        th {
-          border: 1px solid CanvasText;
-        }
-
-        td {
-          vertical-align: top;
-          padding: 1em;
+        caption {
+          font-size: 3em;
         }
 
         table {
@@ -304,8 +309,22 @@ const main = async () => {
           margin-bottom: 3em;
         }
 
-        caption {
-          font-size: 3em;
+        td,
+        th {
+          border: 1px solid grey;
+        }
+
+        tr {
+          height: 2em;
+        }
+
+        th[scope="row"] {
+          padding: 0 1em;
+        }
+
+        td {
+          vertical-align: top;
+          padding: 0.75em;
         }
 
         ul {
@@ -313,12 +332,16 @@ const main = async () => {
           margin: 0;
           padding: 0;
           display: grid;
-          grid-template-columns: repeat(3, 96px);
+          grid-template-columns: repeat(3, ${iconSize}px);
           gap: 1em;
         }
 
         li {
-          width: 96px;
+          width: ${iconSize}px;
+        }
+
+        .icon {
+          display: flex;
         }
 
         .icon-watermark {
