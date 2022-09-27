@@ -284,12 +284,22 @@ const main = async () => {
       <style>
         :root {
           color-scheme: dark;
+          --bg-dark: rgb(28, 27, 34)
+          --fg-dark: rgb(251, 251, 254)
         }
 
         body {
-          background: Canvas;
+          background: var(--bg-dark);
+          color: var(--fg-dark);
           font-size: 18px;
           font-family: sans-serif;
+        }
+
+        a {
+          color: #8c8cff;
+        }
+        a:visited {
+          color: #ffadff;
         }
 
         h1 {
