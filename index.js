@@ -226,6 +226,7 @@ const main = async () => {
                             ${weapons
                               .map((weapon) => {
                                 const name = weapon.name;
+                                // TODO: Add craftability overlay
                                 const watermark = weapon.iconWatermark;
                                 const icon = weapon.icon;
                                 const lightGGUrl = new URL(
