@@ -228,13 +228,13 @@ const main = async () => {
                                 const name = weapon.name;
                                 const watermark = weapon.iconWatermark;
                                 const icon = weapon.icon;
-                                const gunsmithURL = new URL(
-                                  `/w/${weapon.hash}`,
-                                  "https://d2gunsmith.com"
+                                const lightGGUrl = new URL(
+                                  `/db/items/${weapon.hash}`,
+                                  "https://www.light.gg"
                                 );
                                 return `
                                   <li>
-                                    <a href="${gunsmithURL}" title="${name}">
+                                    <a href="${lightGGUrl}" title="${name}">
                                       <div class="icon">
                                         <img
                                           class="icon-watermark"
