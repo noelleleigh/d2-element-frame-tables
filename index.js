@@ -261,10 +261,10 @@ const main = async () => {
                                         <img
                                           class="icon-watermark"
                                           src="${watermark}"
+                                          alt=""
                                           width="${iconSize}"
                                           height="${iconSize}"
                                           loading="lazy"
-                                          role="presentation"
                                         >
                                         <img
                                           src="${icon}"
@@ -306,8 +306,8 @@ const main = async () => {
       <style>
         :root {
           color-scheme: dark;
-          --bg-dark: rgb(28, 27, 34)
-          --fg-dark: rgb(251, 251, 254)
+          --bg-dark: rgb(28, 27, 34);
+          --fg-dark: rgb(251, 251, 254);
         }
 
         body {
