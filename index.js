@@ -106,6 +106,12 @@ const getWeapons = async () => {
   const DestinyInventoryItemDefinition = await api.getApi(
     manifest.DestinyInventoryItemDefinition
   );
+  const DestinyRecordDefinition = await api.getApi(
+    manifest.DestinyRecordDefinition
+  );
+  const DestinyCollectibleDefinition = await api.getApi(
+    manifest.DestinyCollectibleDefinition
+  );
   const weapons = Object.values(DestinyInventoryItemDefinition)
     .filter(filterItemByCategory(categoryWeapon))
     .filter(filterItemByTier(4008398120)) // Legendary
@@ -116,9 +122,16 @@ const getWeapons = async () => {
           weapon.quality?.versions[weapon.quality.currentVersion].powerCapHash
         ]?.powerCap > 9999
       );
-    });
+    })
+    // Only include items with collectible hashes
+    .filter((weapon) => weapon.collectibleHash != undefined);
   const weaponInfo = weapons
     .map((item) => {
+      const collectible = DestinyCollectibleDefinition[item.collectibleHash];
+      const matchingRecord = Object.values(DestinyRecordDefinition).filter(
+        (record) =>
+          record.displayProperties.icon === collectible.displayProperties.icon
+      )[0];
       return {
         name: item.displayProperties.name,
         icon: new URL(item.displayProperties.icon, api.URL_BASE),
@@ -152,6 +165,11 @@ const getWeapons = async () => {
                   .displayProperties.name
             )[0]
         ),
+        // There's no good method to determine craftability
+        // https://github.com/DestinyItemManager/DIM/pull/8420#issuecomment-1156257803
+        craftable:
+          collectible.displayProperties.icon ===
+          matchingRecord?.displayProperties.icon,
       };
     })
     .filter((item) => item.damageType !== undefined);
@@ -225,8 +243,9 @@ const main = async () => {
                           <ul>
                             ${weapons
                               .map((weapon) => {
-                                const name = weapon.name;
-                                // TODO: Add craftability overlay
+                                const name = `${weapon.name}${
+                                  weapon.craftable ? " (Craftable)" : ""
+                                }`;
                                 const watermark = weapon.iconWatermark;
                                 const icon = weapon.icon;
                                 const lightGGUrl = new URL(
@@ -236,7 +255,9 @@ const main = async () => {
                                 return `
                                   <li>
                                     <a href="${lightGGUrl}" title="${name}">
-                                      <div class="icon">
+                                      <div class="icon ${
+                                        weapon.craftable ? "craftable" : ""
+                                      }">
                                         <img
                                           class="icon-watermark"
                                           src="${watermark}"
@@ -353,6 +374,12 @@ const main = async () => {
 
         .icon {
           display: flex;
+        }
+
+        .icon.craftable {
+          outline-color: rgb(162, 0, 0);
+          outline-style: solid;
+          outline-width: 2px;
         }
 
         .icon-watermark {
