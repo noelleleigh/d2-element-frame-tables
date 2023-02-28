@@ -7,6 +7,13 @@ dotEnv.config();
 
 const URL_BASE = "https://www.bungie.net";
 
+class APIError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "APIError";
+  }
+}
+
 const commonHeaders = {
   "User-Agent": process.env.USER_AGENT,
   "X-API-Key": process.env.API_KEY,
@@ -34,6 +41,10 @@ const getApi = async (path) => {
 
 const getManifest = async (lang) => {
   const manifest = await getApi("/Platform/Destiny2/Manifest/");
+  if (manifest.ErrorCode) {
+    throw new APIError(`${manifest.ErrorStatus}: ${manifest.Message}`);
+  }
+  console.log(manifest);
   return manifest.Response.jsonWorldComponentContentPaths[lang];
 };
 
