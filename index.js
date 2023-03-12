@@ -23,7 +23,7 @@ const weaponTypeHashes = [
   3954685534, // Submachine Guns
 ];
 
-const damageTypeOrder = ["Kinetic", "Arc", "Solar", "Void", "Stasis"];
+const damageTypeOrder = ["Kinetic", "Arc", "Solar", "Void", "Stasis", "Strand"];
 
 const filterItemByCategory = (categoryHash) => {
   return (item) => {
