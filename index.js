@@ -249,8 +249,8 @@ const main = async () => {
                                 const watermark = weapon.iconWatermark;
                                 const icon = weapon.icon;
                                 const lightGGUrl = new URL(
-                                  `/db/items/${weapon.hash}`,
-                                  "https://www.light.gg"
+                                  `/w/${weapon.hash}`,
+                                  "https://d2foundry.gg"
                                 );
                                 return `
                                   <li>
