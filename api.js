@@ -41,7 +41,7 @@ const getApi = async (path) => {
 
 const getManifest = async (lang) => {
   const manifest = await getApi("/Platform/Destiny2/Manifest/");
-  if (manifest.ErrorCode == !1) {
+  if (manifest.ErrorCode !== 1) {
     throw new APIError(`${manifest.ErrorStatus}: ${manifest.Message}`);
   }
   return manifest.Response.jsonWorldComponentContentPaths[lang];
