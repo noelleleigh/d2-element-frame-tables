@@ -114,7 +114,8 @@ const getWeapons = async () => {
   );
   const weapons = Object.values(DestinyInventoryItemDefinition)
     .filter(filterItemByCategory(categoryWeapon))
-    .filter(filterItemByTier(4008398120)) // Legendary
+    // Legendary
+    .filter(filterItemByTier(4008398120))
     // Exclude sunset weapons
     .filter((weapon) => {
       return (
@@ -122,16 +123,10 @@ const getWeapons = async () => {
           weapon.quality?.versions[weapon.quality.currentVersion].powerCapHash
         ]?.powerCap > 9999
       );
-    })
-    // Only include items with collectible hashes
-    .filter((weapon) => weapon.collectibleHash != undefined);
+    });
+  // Only include items with collectible hashes
   const weaponInfo = weapons
     .map((item) => {
-      const collectible = DestinyCollectibleDefinition[item.collectibleHash];
-      const matchingRecord = Object.values(DestinyRecordDefinition).filter(
-        (record) =>
-          record.displayProperties.icon === collectible.displayProperties.icon
-      )[0];
       return {
         name: item.displayProperties.name,
         icon: new URL(item.displayProperties.icon, api.URL_BASE),
@@ -165,11 +160,11 @@ const getWeapons = async () => {
                   .displayProperties.name
             )[0]
         ),
-        // There's no good method to determine craftability
-        // https://github.com/DestinyItemManager/DIM/pull/8420#issuecomment-1156257803
+        // This is the best way I know of to determine craftability
         craftable:
-          collectible.displayProperties.icon ===
-          matchingRecord?.displayProperties.icon,
+          item.tooltipNotifications?.filter((tip) =>
+            tip.displayStyle.includes("deepsight")
+          ).length > 0,
       };
     })
     .filter((item) => item.damageType !== undefined);
