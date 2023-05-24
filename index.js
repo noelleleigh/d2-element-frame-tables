@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import fs from "node:fs/promises";
 import * as api from "./api.js";
 
 const categoryWeapon = 1;
