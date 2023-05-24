@@ -243,13 +243,13 @@ const main = async () => {
                                 }`;
                                 const watermark = weapon.iconWatermark;
                                 const icon = weapon.icon;
-                                const lightGGUrl = new URL(
+                                const d2FoundryURL = new URL(
                                   `/w/${weapon.hash}`,
                                   "https://d2foundry.gg"
                                 );
                                 return `
                                   <li>
-                                    <a href="${lightGGUrl}" title="${name}">
+                                    <a href="${d2FoundryURL}" title="${name}">
                                       <div class="icon ${
                                         weapon.craftable ? "craftable" : ""
                                       }">
