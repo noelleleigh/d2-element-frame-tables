@@ -116,6 +116,8 @@ const getWeapons = async () => {
     .filter(filterItemByCategory(categoryWeapon))
     // Legendary
     .filter(filterItemByTier(4008398120))
+    // Exclude dummy items
+    .filter((item) => !filterItemByCategory(3109687656)(item))
     // Exclude sunset weapons
     .filter((weapon) => {
       return (
