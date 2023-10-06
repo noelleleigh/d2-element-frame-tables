@@ -37,7 +37,7 @@ const filterItemByTier = (tier) => {
 
 const pickWeaponTypeHash = (item) => {
   const potentialWeaponTypeHashes = item.itemCategoryHashes.filter((hash) =>
-    weaponTypeHashes.includes(hash)
+    weaponTypeHashes.includes(hash),
   );
   let weaponTypeHash;
 
@@ -56,7 +56,7 @@ const pickWeaponTypeHash = (item) => {
       weaponTypeHash = 1504945536;
     } else {
       throw new Error(
-        `Unknown weapon type hash group for "${item.displayProperties.name}": [${potentialWeaponTypeHashes}]`
+        `Unknown weapon type hash group for "${item.displayProperties.name}": [${potentialWeaponTypeHashes}]`,
       );
     }
   }
@@ -89,28 +89,28 @@ const remapPerkName = (name) => {
 const getWeapons = async () => {
   const manifest = await api.getManifest("en");
   const DestinyDamageTypeDefinition = await api.getApi(
-    manifest.DestinyDamageTypeDefinition
+    manifest.DestinyDamageTypeDefinition,
   );
   const DestinySocketTypeDefinition = await api.getApi(
-    manifest.DestinySocketTypeDefinition
+    manifest.DestinySocketTypeDefinition,
   );
   const DestinySocketCategoryDefinition = await api.getApi(
-    manifest.DestinySocketCategoryDefinition
+    manifest.DestinySocketCategoryDefinition,
   );
   const DestinyItemCategoryDefinition = await api.getApi(
-    manifest.DestinyItemCategoryDefinition
+    manifest.DestinyItemCategoryDefinition,
   );
   const DestinyPowerCapDefinition = await api.getApi(
-    manifest.DestinyPowerCapDefinition
+    manifest.DestinyPowerCapDefinition,
   );
   const DestinyInventoryItemDefinition = await api.getApi(
-    manifest.DestinyInventoryItemDefinition
+    manifest.DestinyInventoryItemDefinition,
   );
   const DestinyRecordDefinition = await api.getApi(
-    manifest.DestinyRecordDefinition
+    manifest.DestinyRecordDefinition,
   );
   const DestinyCollectibleDefinition = await api.getApi(
-    manifest.DestinyCollectibleDefinition
+    manifest.DestinyCollectibleDefinition,
   );
   const weapons = Object.values(DestinyInventoryItemDefinition)
     .filter(filterItemByCategory(categoryWeapon))
@@ -138,7 +138,7 @@ const getWeapons = async () => {
               item.quality.displayVersionWatermarkIcons[
                 item.quality.displayVersionWatermarkIcons.length - 1
               ],
-              api.URL_BASE
+              api.URL_BASE,
             )
           : // Old format
             new URL(item.iconWatermarkShelved, api.URL_BASE),
@@ -163,13 +163,13 @@ const getWeapons = async () => {
             .map(
               (entry) =>
                 DestinyInventoryItemDefinition[entry.singleInitialItemHash]
-                  .displayProperties.name
-            )[0]
+                  .displayProperties.name,
+            )[0],
         ),
         // This is the best way I know of to determine craftability
         craftable:
           item.tooltipNotifications?.filter((tip) =>
-            tip.displayStyle.includes("deepsight")
+            tip.displayStyle.includes("deepsight"),
           ).length > 0,
       };
     })
@@ -180,24 +180,24 @@ const getWeapons = async () => {
 const main = async () => {
   const weapons = await getWeapons();
   const weaponTypes = Array.from(
-    new Set(weapons.map((weapon) => weapon.weaponType))
+    new Set(weapons.map((weapon) => weapon.weaponType)),
   );
   weaponTypes.sort();
   const tables = [];
   const iconSize = 48;
   for (const weaponType of weaponTypes) {
     const weaponsOfType = weapons.filter(
-      (weapon) => weapon.weaponType === weaponType
+      (weapon) => weapon.weaponType === weaponType,
     );
     const intrinsics = Array.from(
-      new Set(weaponsOfType.map((weapon) => weapon.intrinsicPerk))
+      new Set(weaponsOfType.map((weapon) => weapon.intrinsicPerk)),
     );
     intrinsics.sort((a, b) => a.localeCompare(b));
     const damageTypes = Array.from(
-      new Set(weaponsOfType.map((weapon) => weapon.damageType))
+      new Set(weaponsOfType.map((weapon) => weapon.damageType)),
     );
     damageTypes.sort(
-      (a, b) => damageTypeOrder.indexOf(a) - damageTypeOrder.indexOf(b)
+      (a, b) => damageTypeOrder.indexOf(a) - damageTypeOrder.indexOf(b),
     );
 
     const rows = [];
@@ -251,7 +251,7 @@ const main = async () => {
                                 const icon = weapon.icon;
                                 const d2FoundryURL = new URL(
                                   `/w/${weapon.hash}`,
-                                  "https://d2foundry.gg"
+                                  "https://d2foundry.gg",
                                 );
                                 return `
                                   <li>
@@ -288,7 +288,7 @@ const main = async () => {
                   })
                   .join("\n")}
               </tr>
-            `
+            `,
           )
           .join("\n")}
       </table>

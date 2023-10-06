@@ -22,7 +22,7 @@ const commonHeaders = {
 const authorizedFetch = (url) => {
   assert(
     commonHeaders["X-API-Key"] !== undefined,
-    "Missing X-API-Key HTTP header!"
+    "Missing X-API-Key HTTP header!",
   );
   return fetch(url, { headers: commonHeaders });
 };
