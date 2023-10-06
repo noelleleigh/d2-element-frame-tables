@@ -44,7 +44,10 @@ const getManifest = async (lang) => {
   if (manifest.ErrorCode !== 1) {
     throw new APIError(`${manifest.ErrorStatus}: ${manifest.Message}`);
   }
-  return manifest.Response.jsonWorldComponentContentPaths[lang];
+  const contentPaths = manifest.Response.jsonWorldComponentContentPaths[lang];
+  // Add the version string for convenience
+  contentPaths.version = manifest.Response.version;
+  return contentPaths;
 };
 
 export { getApi, getManifest, URL_BASE };
