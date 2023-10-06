@@ -289,7 +289,89 @@ const main = async () => {
     `;
     tables.push(html);
   }
+  const css = `
+  :root {
+    color-scheme: dark;
+    --bg-dark: rgb(28, 27, 34);
+    --fg-dark: rgb(251, 251, 254);
+  }
 
+  body {
+    background: var(--bg-dark);
+    color: var(--fg-dark);
+    font-size: 18px;
+    font-family: sans-serif;
+  }
+
+  a {
+    color: #8c8cff;
+  }
+  a:visited {
+    color: #ffadff;
+  }
+
+  h1 {
+    margin: auto;
+    text-align: center;
+    font-size: 4em;
+    margin-bottom: 3rem;
+  }
+
+  caption {
+    font-size: 3em;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3em;
+  }
+
+  td,
+  th {
+    border: 1px solid grey;
+  }
+
+  tr {
+    height: 2em;
+  }
+
+  th[scope="row"] {
+    padding: 0 1em;
+  }
+
+  td {
+    vertical-align: top;
+    padding: 0.75em;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, ${iconSize}px);
+    gap: 1em;
+  }
+
+  li {
+    width: ${iconSize}px;
+  }
+
+  .icon {
+    display: flex;
+  }
+
+  .icon.craftable {
+    outline-color: rgb(162, 0, 0);
+    outline-style: solid;
+    outline-width: 2px;
+  }
+
+  .icon-watermark {
+    position: absolute;
+  }
+  `;
   const fullPage = `
   <!DOCTYPE html>
   <html lang="en">
@@ -299,87 +381,7 @@ const main = async () => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Destiny 2 Damage Types vs. Weapon Frames</title>
       <style>
-        :root {
-          color-scheme: dark;
-          --bg-dark: rgb(28, 27, 34);
-          --fg-dark: rgb(251, 251, 254);
-        }
-
-        body {
-          background: var(--bg-dark);
-          color: var(--fg-dark);
-          font-size: 18px;
-          font-family: sans-serif;
-        }
-
-        a {
-          color: #8c8cff;
-        }
-        a:visited {
-          color: #ffadff;
-        }
-
-        h1 {
-          margin: auto;
-          text-align: center;
-          font-size: 4em;
-          margin-bottom: 3rem;
-        }
-
-        caption {
-          font-size: 3em;
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 3em;
-        }
-
-        td,
-        th {
-          border: 1px solid grey;
-        }
-
-        tr {
-          height: 2em;
-        }
-
-        th[scope="row"] {
-          padding: 0 1em;
-        }
-
-        td {
-          vertical-align: top;
-          padding: 0.75em;
-        }
-
-        ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: grid;
-          grid-template-columns: repeat(3, ${iconSize}px);
-          gap: 1em;
-        }
-
-        li {
-          width: ${iconSize}px;
-        }
-
-        .icon {
-          display: flex;
-        }
-
-        .icon.craftable {
-          outline-color: rgb(162, 0, 0);
-          outline-style: solid;
-          outline-width: 2px;
-        }
-
-        .icon-watermark {
-          position: absolute;
-        }
+        ${css}
       </style>
   </head>
   <body>
