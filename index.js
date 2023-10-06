@@ -106,12 +106,6 @@ const getWeapons = async () => {
   const DestinyInventoryItemDefinition = await api.getApi(
     manifest.DestinyInventoryItemDefinition,
   );
-  const DestinyRecordDefinition = await api.getApi(
-    manifest.DestinyRecordDefinition,
-  );
-  const DestinyCollectibleDefinition = await api.getApi(
-    manifest.DestinyCollectibleDefinition,
-  );
   const weapons = Object.values(DestinyInventoryItemDefinition)
     .filter(filterItemByCategory(categoryWeapon))
     // Legendary
