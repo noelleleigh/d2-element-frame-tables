@@ -86,8 +86,7 @@ const remapPerkName = (name) => {
   }
 };
 
-const getWeapons = async () => {
-  const manifest = await api.getManifest("en");
+const getWeapons = async (manifest) => {
   const DestinyDamageTypeDefinition = await api.getApi(
     manifest.DestinyDamageTypeDefinition,
   );
@@ -172,7 +171,8 @@ const getWeapons = async () => {
 };
 
 const main = async () => {
-  const weapons = await getWeapons();
+  const manifest = await api.getManifest("en");
+  const weapons = await getWeapons(manifest);
   const weaponTypes = Array.from(
     new Set(weapons.map((weapon) => weapon.weaponType)),
   );
@@ -385,6 +385,9 @@ const main = async () => {
   <body>
       <h1>Non-Sunset Legendary Weapons</h1>
       ${tables.join("\n")}
+      <footer>
+        <p>Version: <code>${manifest.version}</code></p>
+      </footer>
   </body>
   </html>
   `;
