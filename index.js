@@ -73,12 +73,10 @@ const pickWeaponTypeHash = (item) => {
  */
 const remapPerkName = (name) => {
   const map = new Map();
-  map.set("Häkke Precision Frame", "Precision Frame");
-  map.set("MIDA Synergy", "Precision Frame"); // MIDA Mini-Tool
-  map.set("Omolon Adaptive Frame", "Lightweight Frame");
+  map.set("Legacy PR-55 Frame", "Lightweight Frame"); // BxR-55 Battler
+  map.set("MIDA Synergy", "Lightweight Frame"); // MIDA Mini-Tool
   map.set("Shot Package", "Aggressive Frame"); // Felwinter's Lie
   map.set("Together Forever", "Adaptive Frame"); // Drang
-  map.set("VEIST Rapid-Fire", "Rapid-Fire Frame");
   if (map.has(name)) {
     return map.get(name);
   } else {
