@@ -110,15 +110,7 @@ const getWeapons = async (manifest) => {
     // Legendary
     .filter(filterItemByTier(4008398120))
     // Exclude dummy items
-    .filter((item) => !filterItemByCategory(3109687656)(item))
-    // Exclude sunset weapons
-    .filter((weapon) => {
-      return (
-        DestinyPowerCapDefinition[
-          weapon.quality?.versions[weapon.quality.currentVersion].powerCapHash
-        ]?.powerCap > 9999
-      );
-    });
+    .filter((item) => !filterItemByCategory(3109687656)(item));
   // Only include items with collectible hashes
   const weaponInfo = weapons
     .map((item) => {
@@ -385,7 +377,7 @@ const main = async () => {
       </style>
   </head>
   <body>
-      <h1>Non-Sunset Legendary Weapons</h1>
+      <h1>Legendary Weapons</h1>
       ${tables.join("\n")}
       <footer>
         <p>Version: <code>${manifest.version}</code></p>
