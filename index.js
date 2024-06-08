@@ -97,9 +97,6 @@ const getWeapons = async (manifest) => {
   const DestinyItemCategoryDefinition = await api.getApi(
     manifest.DestinyItemCategoryDefinition,
   );
-  const DestinyPowerCapDefinition = await api.getApi(
-    manifest.DestinyPowerCapDefinition,
-  );
   const DestinyInventoryItemDefinition = await api.getApi(
     manifest.DestinyInventoryItemDefinition,
   );
