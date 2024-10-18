@@ -11,10 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.5"
-  },
-  "devDependencies": {
-    "prettier": "3.2.5"
+    "dotenv": "^16.4.5",
+    "prettier": "3.3.3"
   },
   "engines": {
     "node": "20"
