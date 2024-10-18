@@ -158,6 +158,11 @@ const getWeapons = async (manifest) => {
   return weaponInfo;
 };
 
+// Template tags for Prettier to format them
+// Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates
+const html = (strings, ...values) => String.raw({ raw: strings }, ...values);
+const css = (strings, ...values) => String.raw({ raw: strings }, ...values);
+
 const main = async () => {
   const manifest = await api.getManifest("en");
   const weapons = await getWeapons(manifest);
@@ -202,9 +207,11 @@ const main = async () => {
 
     const captionId = weaponType.replace(/\s/g, "-");
     // Make HTML
-    const html = `
+    const table = html`
       <table>
-        <caption id="${captionId}"><a href="#${captionId}">${weaponType}</a></caption>
+        <caption id="${captionId}">
+          <a href="#${captionId}">${weaponType}</a>
+        </caption>
         <tr>
           <th scope="col">Frame</th>
           ${damageTypes
@@ -213,7 +220,7 @@ const main = async () => {
         </tr>
         ${rows
           .map(
-            (row) => `
+            (row) => html`
               <tr>
                 ${Array.from(row.values())
                   .map((weapons, index) => {
@@ -222,51 +229,53 @@ const main = async () => {
                         ? // The first item in this array is the intrinsic perk
                           weapons
                         : // Otherwise it's an array of weapons
-                          `
-                          <ul>
-                            ${weapons
-                              .map((weapon) => {
-                                const name = `${weapon.name}${
-                                  weapon.craftable ? " (Craftable)" : ""
-                                }`;
-                                const watermark = weapon.iconWatermark;
-                                const icon = weapon.icon;
-                                const d2FoundryURL = new URL(
-                                  `/w/${weapon.hash}`,
-                                  "https://d2foundry.gg",
-                                );
-                                return `
-                                  <li>
-                                    <a href="${d2FoundryURL}" title="${name}">
-                                      <div class="icon ${
-                                        weapon.craftable ? "craftable" : ""
-                                      }">
-                                        <img
-                                          class="icon-watermark"
-                                          src="${watermark}"
-                                          alt=""
-                                          width="${iconSize}"
-                                          height="${iconSize}"
-                                          loading="lazy"
+                          html`
+                            <ul>
+                              ${weapons
+                                .map((weapon) => {
+                                  const name = `${weapon.name}${
+                                    weapon.craftable ? " (Craftable)" : ""
+                                  }`;
+                                  const watermark = weapon.iconWatermark;
+                                  const icon = weapon.icon;
+                                  const d2FoundryURL = new URL(
+                                    `/w/${weapon.hash}`,
+                                    "https://d2foundry.gg",
+                                  );
+                                  return html`
+                                    <li>
+                                      <a href="${d2FoundryURL}" title="${name}">
+                                        <div
+                                          class="icon ${weapon.craftable
+                                            ? "craftable"
+                                            : ""}"
                                         >
-                                        <img
-                                          src="${icon}"
-                                          alt="${name}"
-                                          width="${iconSize}"
-                                          height="${iconSize}"
-                                          loading="lazy"
-                                        >
-                                      </div>
-                                    </a>
-                                  </li>
-                                `;
-                              })
-                              .join("\n")}
-                          </ul>
-                        `;
+                                          <img
+                                            class="icon-watermark"
+                                            src="${watermark}"
+                                            alt=""
+                                            width="${iconSize}"
+                                            height="${iconSize}"
+                                            loading="lazy"
+                                          />
+                                          <img
+                                            src="${icon}"
+                                            alt="${name}"
+                                            width="${iconSize}"
+                                            height="${iconSize}"
+                                            loading="lazy"
+                                          />
+                                        </div>
+                                      </a>
+                                    </li>
+                                  `;
+                                })
+                                .join("\n")}
+                            </ul>
+                          `;
                     return index === 0
-                      ? `<th scope="row">${val}</th>`
-                      : `<td>${val}</td>`;
+                      ? html`<th scope="row">${val}</th>`
+                      : html`<td>${val}</td>`;
                   })
                   .join("\n")}
               </tr>
@@ -275,111 +284,111 @@ const main = async () => {
           .join("\n")}
       </table>
     `;
-    tables.push(html);
+    tables.push(table);
   }
-  const css = `
-  :root {
-    color-scheme: dark;
-    --bg-dark: rgb(28, 27, 34);
-    --fg-dark: rgb(251, 251, 254);
-  }
+  const cssRules = css`
+    :root {
+      color-scheme: dark;
+      --bg-dark: rgb(28, 27, 34);
+      --fg-dark: rgb(251, 251, 254);
+    }
 
-  body {
-    background: var(--bg-dark);
-    color: var(--fg-dark);
-    font-size: 18px;
-    font-family: sans-serif;
-  }
+    body {
+      background: var(--bg-dark);
+      color: var(--fg-dark);
+      font-size: 18px;
+      font-family: sans-serif;
+    }
 
-  a {
-    color: #8c8cff;
-  }
-  a:visited {
-    color: #ffadff;
-  }
+    a {
+      color: #8c8cff;
+    }
+    a:visited {
+      color: #ffadff;
+    }
 
-  h1 {
-    margin: auto;
-    text-align: center;
-    font-size: 4em;
-    margin-bottom: 3rem;
-  }
+    h1 {
+      margin: auto;
+      text-align: center;
+      font-size: 4em;
+      margin-bottom: 3rem;
+    }
 
-  caption {
-    font-size: 3em;
-  }
+    caption {
+      font-size: 3em;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 3em;
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 3em;
+    }
 
-  td,
-  th {
-    border: 1px solid grey;
-  }
+    td,
+    th {
+      border: 1px solid grey;
+    }
 
-  tr {
-    height: 2em;
-  }
+    tr {
+      height: 2em;
+    }
 
-  th[scope="row"] {
-    padding: 0 1em;
-  }
+    th[scope="row"] {
+      padding: 0 1em;
+    }
 
-  td {
-    vertical-align: top;
-    padding: 0.75em;
-  }
+    td {
+      vertical-align: top;
+      padding: 0.75em;
+    }
 
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, ${iconSize}px);
-    gap: 1em;
-  }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, ${iconSize}px);
+      gap: 1em;
+    }
 
-  li {
-    width: ${iconSize}px;
-  }
+    li {
+      width: ${iconSize}px;
+    }
 
-  .icon {
-    display: flex;
-  }
+    .icon {
+      display: flex;
+    }
 
-  .icon.craftable {
-    outline-color: rgb(162, 0, 0);
-    outline-style: solid;
-    outline-width: 2px;
-  }
+    .icon.craftable {
+      outline-color: rgb(162, 0, 0);
+      outline-style: solid;
+      outline-width: 2px;
+    }
 
-  .icon-watermark {
-    position: absolute;
-  }
+    .icon-watermark {
+      position: absolute;
+    }
   `;
-  const fullPage = `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Destiny 2 Damage Types vs. Weapon Frames</title>
-      <style>
-        ${css}
-      </style>
-  </head>
-  <body>
-      <h1>Legendary Weapons</h1>
-      ${tables.join("\n")}
-      <footer>
-        <p>Version: <code>${manifest.version}</code></p>
-      </footer>
-  </body>
-  </html>
+  const fullPage = html`
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Destiny 2 Damage Types vs. Weapon Frames</title>
+        <style>
+          ${cssRules}
+        </style>
+      </head>
+      <body>
+        <h1>Legendary Weapons</h1>
+        ${tables.join("\n")}
+        <footer>
+          <p>Version: <code>${manifest.version}</code></p>
+        </footer>
+      </body>
+    </html>
   `;
   const formattedFullPage = await prettier.format(fullPage, {
     parser: "html",
