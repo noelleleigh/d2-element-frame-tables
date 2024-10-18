@@ -216,7 +216,8 @@ const main = async () => {
           <th scope="col">Frame</th>
           ${damageTypes
             .map((type) => `<th scope="col">${type}</th>`)
-            .join("\n")}
+            .join("")
+            .trim()}
         </tr>
         ${rows
           .map(
@@ -268,23 +269,26 @@ const main = async () => {
                                         </div>
                                       </a>
                                     </li>
-                                  `;
+                                  `.trim();
                                 })
-                                .join("\n")}
+                                .join("")
+                                .trim()}
                             </ul>
-                          `;
+                          `.trim();
                     return index === 0
                       ? html`<th scope="row">${val}</th>`
                       : html`<td>${val}</td>`;
                   })
-                  .join("\n")}
+                  .join("")
+                  .trim()}
               </tr>
             `,
           )
-          .join("\n")}
+          .join("")
+          .trim()}
       </table>
-    `;
-    tables.push(table);
+    `.trim();
+    tables.push(table.trim());
   }
   const cssRules = css`
     :root {
@@ -378,12 +382,12 @@ const main = async () => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Destiny 2 Damage Types vs. Weapon Frames</title>
         <style>
-          ${cssRules}
+          ${cssRules.trim()}
         </style>
       </head>
       <body>
         <h1>Legendary Weapons</h1>
-        ${tables.join("\n")}
+        ${tables.join("").trim()}
         <footer>
           <p>Version: <code>${manifest.version}</code></p>
         </footer>
