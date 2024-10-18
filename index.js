@@ -381,7 +381,10 @@ const main = async () => {
   </body>
   </html>
   `;
-  const formattedFullPage = await prettier.format(fullPage, { parser: "html" });
+  const formattedFullPage = await prettier.format(fullPage, {
+    parser: "html",
+    htmlWhitespaceSensitivity: "ignore",
+  });
   await fs.writeFile("./index.html", formattedFullPage);
 };
 
