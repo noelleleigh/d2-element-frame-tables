@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import * as prettier from "prettier";
 import * as api from "./api.js";
 
 const categoryWeapon = 1;
@@ -380,7 +381,8 @@ const main = async () => {
   </body>
   </html>
   `;
-  await fs.writeFile("./index.html", fullPage);
+  const formattedFullPage = await prettier.format(fullPage, { parser: "html" });
+  await fs.writeFile("./index.html", formattedFullPage);
 };
 
 main().catch(console.error);
