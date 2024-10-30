@@ -1,3 +1,7 @@
+Archived, now lives at: <https://git.sr.ht/~noelle/d2-element-frame-tables>
+
+---
+
 # d2-element-frame-tables
 
 Generate tables of all the elemental damage type and weapon frame combinations available in Destiny 2.
